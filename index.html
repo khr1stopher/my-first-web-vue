@@ -2,23 +2,103 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>mi primera web con vue</title>
+	<title>Crud con vue</title>
 	<!-- vue cdn -->
-	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="js/vue.js"></script>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- fonts -->
+	<!-- js -->
+	<style>
+	.taskDone {
+        text-decoration: line-through;
+    }
+	</style>
 </head>
 <body>
-	<div id="app">
-		<nav>
-			<a href="#"></a>
-		</nav>
+	<div class="container">
+		<div id="app" class="m-auto col-sm-8 col-sm-offset-2">
+			<h1>{{ nameApp }}</h1>
+
+			<!-- form -->
+	        <div class="panel panel-default">
+	          <h2 class="text-center">Add A new Task</h2>
+	          <form v-on:submit.prevent="addTask" class="app-form">
+	              <input type="text" class="form-control" v-model="tasks.title">
+	              <input type="submit" value="Add" class="btn btn-block btn-success">
+	          </form>
+	        </div>
+
+        	<!-- table -->
+			<table class="table">
+	          	<thead>
+	            	<tr>
+	            		<th>CheckMark Done</th>
+	            		<th>Task Name</th>
+	            		<th>Delete</th>
+	            	</tr>
+	        	</thead>
+	        	<tbody>
+					<tr v-for="task in tasks">
+						<td>
+							<input type="checkbox" v-model="task.done">
+						</td>
+						<td :class="{taskDone: task.done}">
+							{{ task.title }}
+						</td>
+						<td>
+							<button v-on:click="deleteTask(task)" class="btn btn-danger">
+								Delete
+							</button>
+						</td>
+					</tr>
+	          	</tbody>
+	        </table>
+		</div>
 	</div>
-	<script>
-		var app = new Vue({
-			el: '#app',
-			data:{
-				message: 'Hello Vue!'
+
+	<!-- script vue -->
+<script>
+	var app = new Vue({
+		el: '#app',
+		data: {
+			nameApp: 'Tasks vue',
+			tasks: [
+				{
+					title: 'task 1',
+					done: false
+				},
+				{
+					title: 'task 2',
+					done: false
+				},
+				{
+					title: 'task 3',
+					done: false
+				},
+				{
+					title: 'task 4',
+					done: false
+				}
+			]
+		},
+		methods: {
+			deleteTask(task){
+				this.tasks.splice(this.tasks.indexOf(task), 1);
+				alert(task.title + ' fue eliminado ');
+			},
+			addTask(){
+				this.tasks.push({
+					title: this.tasks.title,
+					done: false
+				}),
+				this.tasks.title = '';
 			}
-		});
-	</script>
+		}
+	});
+</script>
+	<script src="js/jquery-3.3.1.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
